@@ -1,13 +1,41 @@
+<!-- @format -->
+
 ## Các bước cần làm sau khi clone source code:
+
 ### 1. Cài đặt thư viện: npm i
-### 2. Chạy project: npm run dev   
 
+### 2. Chạy project: npm run dev
+
+## next js nó có 2 component
+
+### 1. Sever component:
+
+#### dử liệu năng và tỉnh dùng sever component.
+
+#### bên trong app là sever compoent
+
+### 2. Client component:
+
+#### dử liệu nhẹ và đông thì mình dùng client component.
+
+#### còn củ thì nó nằm trong pages mặt định là client component.
+
+#### next 13 không còn fonder pages này nữa.
 
 &nbsp;
-## Về tác giả: 
-### - Author Hỏi Dân IT :  https://www.youtube.com/@hoidanit
+
+### Router next js bắt buột phải có tiền tố page,
+
 &nbsp;
-### - Xem full series  Tự Học Next.JS Cơ Bản (với React và TypeScript) tại đây: https://www.youtube.com/playlist?list=PLncHg6Kn2JT6zw4JiFOE1z90ghnyrFl5B
+
+## Về tác giả:
+
+### - Author Hỏi Dân IT : https://www.youtube.com/@hoidanit
+
+&nbsp;
+
+### - Xem full series Tự Học Next.JS Cơ Bản (với React và TypeScript) tại đây: https://www.youtube.com/playlist?list=PLncHg6Kn2JT6zw4JiFOE1z90ghnyrFl5B
+
 &nbsp;
 &nbsp;
 &nbsp;
