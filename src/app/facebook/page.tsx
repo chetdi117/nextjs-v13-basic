@@ -2,7 +2,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-
+import { Button } from 'react-bootstrap';
 const FacebookPageComponent = () => {
   const router = useRouter();
   const handleBtn = () => {
@@ -11,6 +11,7 @@ const FacebookPageComponent = () => {
   return (
     <div>
       <h1>Facebook Page</h1>
+      <Button variant="primary">Vu rat dep trai</Button>
       <button onClick={() => handleBtn()}>Back Home</button>
     </div>
   );
