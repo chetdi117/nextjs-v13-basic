@@ -1,10 +1,12 @@
 'use client';
 import { Inter } from 'next/font/google';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import AppFooter from './app.footer';
-import AppHeader from './app.header';
+import 'react-toastify/dist/ReactToastify.css';
+import AppFooter from './components/app.footer';
+import AppHeader from './components/app.header';
 import Container from 'react-bootstrap/Container';
-import { metadata } from './meta-data';
+import { ToastContainer } from 'react-toastify';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -14,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AppHeader />
         <Container> {children}</Container>
         <AppFooter />
+        <ToastContainer />
       </body>
     </html>
   );
