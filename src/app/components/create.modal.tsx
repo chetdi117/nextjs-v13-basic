@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { mutate } from 'swr';
 import { BlogModel } from '@/types';
+import { useForm } from 'react-hook-form';
+import ReactDOM from 'react-dom';
 interface ICreateModalProps {
   showModal: boolean;
   setShowModal: (value: boolean) => void;
@@ -26,15 +28,19 @@ function CreateModal(props: ICreateModalProps) {
     content: '',
   };
   const [form, setForm] = useState(defaultBlog);
+  const { register, handleSubmit, setValue, reset } = useForm({
+    defaultValues: defaultBlog,
+  });
+
   useEffect(() => {
     if (editBlog && editBlog.id) {
-      setForm({
-        title: editBlog.title,
-        content: editBlog.content,
-        author: editBlog.author,
-      } as IFormBlog);
+      setValue('title', editBlog.title);
+      setValue('content', editBlog.content);
+      setValue('author', editBlog.author);
     } else {
-      setForm(defaultBlog);
+      setValue('title', defaultBlog.title);
+      setValue('content', defaultBlog.content);
+      setValue('author', defaultBlog.author);
     }
   }, [editBlog]);
   const handleChange = (updateBlog: Partial<IFormBlog>) => {
@@ -42,42 +48,52 @@ function CreateModal(props: ICreateModalProps) {
       setForm({ ...form, ...updateBlog });
     }
   };
-  const handleSave = (): void => {
-    if (!form.title) {
+  const handleSave = (formData: IFormBlog): void => {
+    debugger;
+    console.log('formDate', formData);
+    if (!formData.title) {
       toast.error('Please enter title');
       return;
     }
 
-    if (!form.author) {
+    if (!formData.author) {
       toast.error('Please enter author');
       return;
     }
 
-    if (!form.content) {
+    if (!formData.content) {
       toast.error('Please enter content');
       return;
     }
 
     if (editBlog && editBlog.id) {
-      updateBlog();
+      updateBlog(formData);
     } else {
-      createBlog();
+      createBlog(formData);
+    }
+  };
+
+  const triggerSave = (): void => {
+    const button = document.getElementById('saveButton');
+    if (button) {
+      button?.click();
     }
   };
 
   const handleCloseModal = (): void => {
-    setForm(defaultBlog);
+    // setForm(defaultBlog);
     setEditBlog(null);
     setShowModal(false);
+    reset(defaultBlog);
   };
-  const createBlog = (): void => {
+  const createBlog = (data: IFormBlog): void => {
     fetch('http://localhost:8000/blogs', {
       method: 'POST',
       headers: {
         Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title: form.title, author: form.author, content: form.content }),
+      body: JSON.stringify({ title: data.title, author: data.author, content: data.content }),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -89,14 +105,14 @@ function CreateModal(props: ICreateModalProps) {
       });
   };
 
-  const updateBlog = (): void => {
+  const updateBlog = (data: IFormBlog): void => {
     fetch('http://localhost:8000/blogs' + `/${editBlog?.id}`, {
       method: 'PUT',
       headers: {
         Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ title: form.title, author: form.author, content: form.content }),
+      body: JSON.stringify({ title: data.title, author: data.author, content: data.content }),
     })
       .then((res) => res.json())
       .then((res) => {
@@ -117,15 +133,13 @@ function CreateModal(props: ICreateModalProps) {
           <Modal.Title>Create Blog</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {' '}
-          <Form>
+          <Form onSubmit={handleSubmit(handleSave)}>
             <Form.Group className="mb-3">
               <Form.Label>Title</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Title"
-                value={form.title}
-                onChange={(e) => handleChange({ title: e.target.value })}
+                {...register('title')}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -133,8 +147,7 @@ function CreateModal(props: ICreateModalProps) {
               <Form.Control
                 type="text"
                 placeholder="Author"
-                value={form.author}
-                onChange={(e) => handleChange({ author: e.target.value })}
+                {...register('author')}
               />
             </Form.Group>
             <Form.Group
@@ -144,10 +157,13 @@ function CreateModal(props: ICreateModalProps) {
               <Form.Control
                 as="textarea"
                 rows={3}
-                value={form.content}
-                onChange={(e) => handleChange({ content: e.target.value })}
+                {...register('content')}
               />
             </Form.Group>
+            <button
+              type="submit"
+              id="saveButton"
+              className="h-0 w-0 visually-hidden"></button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -158,7 +174,7 @@ function CreateModal(props: ICreateModalProps) {
           </Button>
           <Button
             variant="primary"
-            onClick={() => handleSave()}>
+            onClick={() => triggerSave()}>
             Save
           </Button>
         </Modal.Footer>
