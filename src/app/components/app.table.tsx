@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/esm/Button';
 import Table from 'react-bootstrap/Table';
 import useSWR from 'swr';
 import CreateModal from './create.modal';
+import Link from 'next/link';
 
 function AppTable() {
   const fetcher = (url: string) => fetch(url).then((res) => res.json() as Promise<Array<BlogModel>>);
@@ -73,12 +74,13 @@ function AppTable() {
                         onClick={() => handleButtonEdit(blog)}>
                         Edit
                       </Button>
-                      <Button
-                        variant="warning"
-                        size="sm"
+
+                      <Link
+                        className="btn btn-warning btn-sm"
+                        href={`/blogs/${blog.id}`}
                         style={{ width: '62px' }}>
                         View
-                      </Button>
+                      </Link>
                       <Button
                         variant="danger"
                         size="sm"

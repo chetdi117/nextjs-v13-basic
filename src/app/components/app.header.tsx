@@ -22,10 +22,15 @@ const AppHeader = () => {
           <Nav className="me-auto">
             {/* <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#link">Link</Nav.Link> */}
+            {/* <Link
+              className="nav-link"
+              href={'/blogs'}>
+              Blogs
+            </Link> */}
             <Link
               className="nav-link"
-              href={'/facebook'}>
-              Facebook
+              href={'/blogs'}>
+              Blogs
             </Link>
           </Nav>
         </Navbar.Collapse>

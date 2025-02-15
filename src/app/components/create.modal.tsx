@@ -28,7 +28,13 @@ function CreateModal(props: ICreateModalProps) {
     content: '',
   };
   const [form, setForm] = useState(defaultBlog);
-  const { register, handleSubmit, setValue, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<IFormBlog>({
     defaultValues: defaultBlog,
   });
 
@@ -49,23 +55,6 @@ function CreateModal(props: ICreateModalProps) {
     }
   };
   const handleSave = (formData: IFormBlog): void => {
-    debugger;
-    console.log('formDate', formData);
-    if (!formData.title) {
-      toast.error('Please enter title');
-      return;
-    }
-
-    if (!formData.author) {
-      toast.error('Please enter author');
-      return;
-    }
-
-    if (!formData.content) {
-      toast.error('Please enter content');
-      return;
-    }
-
     if (editBlog && editBlog.id) {
       updateBlog(formData);
     } else {
@@ -139,16 +128,20 @@ function CreateModal(props: ICreateModalProps) {
               <Form.Control
                 type="text"
                 placeholder="Title"
-                {...register('title')}
+                {...register('title', { required: 'Blog title is required' })}
+                isInvalid={Boolean(errors.title)}
               />
+              {errors.title && <Form.Control.Feedback type="invalid">{errors.title.message}</Form.Control.Feedback>}
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Author</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Author"
-                {...register('author')}
+                {...register('author', { required: 'Author title is required' })}
+                isInvalid={Boolean(errors.author)}
               />
+              {errors.author && <Form.Control.Feedback type="invalid">{errors.author.message}</Form.Control.Feedback>}
             </Form.Group>
             <Form.Group
               className="mb-3"
@@ -157,8 +150,10 @@ function CreateModal(props: ICreateModalProps) {
               <Form.Control
                 as="textarea"
                 rows={3}
-                {...register('content')}
+                {...register('content', { required: 'Blog content is required' })}
+                isInvalid={Boolean(errors.content)}
               />
+              {errors.content && <Form.Control.Feedback type="invalid">{errors.content.message}</Form.Control.Feedback>}
             </Form.Group>
             <button
               type="submit"
