@@ -7,6 +7,7 @@ import Table from 'react-bootstrap/Table';
 import useSWR from 'swr';
 import CreateModal from './create.modal';
 import Link from 'next/link';
+import { urlTitle } from '../common';
 
 function AppTable() {
   const fetcher = (url: string) => fetch(url).then((res) => res.json() as Promise<Array<BlogModel>>);
@@ -30,6 +31,9 @@ function AppTable() {
       setBlog(editBlog);
       setShowModal(true);
     }
+  };
+  const renderBlogUrl = (blog: BlogModel) => {
+    return `/blogs/${urlTitle(blog.title)}/${blog.id}`;
   };
   return (
     <>
@@ -77,7 +81,7 @@ function AppTable() {
 
                       <Link
                         className="btn btn-warning btn-sm"
-                        href={`/blogs/${blog.id}`}
+                        href={renderBlogUrl(blog)}
                         style={{ width: '62px' }}>
                         View
                       </Link>
